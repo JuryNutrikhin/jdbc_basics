@@ -7,6 +7,9 @@ import java.util.List;
 //POJO - plain old java object
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Book {
     private int id;
     private String title;
