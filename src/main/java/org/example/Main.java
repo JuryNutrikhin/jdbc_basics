@@ -22,58 +22,72 @@ public class Main {
 //        } catch (ClassNotFoundException e) {
 //            System.out.println("Не удалось загрузить драйвер");
 //        }
-
         String url = "jdbc:postgresql://localhost:5432/home_work";
         String user = "postgres";
         String password = "1111";
 
-        AuthorDao dao = new AuthorDaoImpl2(url, user, password);
+        AuthorDao dao = new AuthorDaoImpl(url, user, password);
+
+
+
+
+
+
+
         Author author = dao.getById(2);
         System.out.println("Author: " + author.getName());
         System.out.println("Books: ");
         author.getBooks().forEach(book -> System.out.println(book.getTitle()));
 
 
-        //2. Реализуйте методы getAll, save, delete в AuthorDao
+        //2. Реализуйте методы getAll в AuthorDao
         List<Book> booksList = new ArrayList<>();
         booksList = dao.getAll();
 
         booksList.forEach(b -> System.out.println(
-                  "   id книги : " + b.getId() +
-                "\n      Книга : "+ b.getTitle()+
-                "\n  id Автора : "+ b.getAuthor().getId()+
-                "\n      Автор : " + b.getAuthor().getName() +
-                "\n    id жанр : "+ b.getGenre().getId()+
-                "\n       Жанр : "+ b.getGenre().getName()+
-                "\n       Цена : "+ b.getPrice()+
-                "\n Количество : "+ b.getAmount()+"\n"));
+                "   id книги : " + b.getId() +
+                        "\n      Книга : " + b.getTitle() +
+                        "\n  id Автора : " + b.getAuthor().getId() +
+                        "\n      Автор : " + b.getAuthor().getName() +
+                        "\n    id жанр : " + b.getGenre().getId() +
+                        "\n       Жанр : " + b.getGenre().getName() +
+                        "\n       Цена : " + b.getPrice() +
+                        "\n Количество : " + b.getAmount() + "\n"));
 
         //3. Реализуйте методы   delete в AuthorDao
 
-        dao.delete(1);
 
         //3. Реализуйте методы  saveAuthorDao
-        List<Book> books1 = new ArrayList<>();
-
+//        List<Book> books1 = new ArrayList<>();
+//
+//        Author author1 = new Author();
+//        author1.setName("bob");
+//
+//        Genre genre = new Genre();
+//        genre.setId(1);
+//        genre.setName("Роман");
+//
+//        Book b = new Book();
+//        b.setAmount(10);
+//        b.setPrice(333);
+//        b.setTitle("война и мир");
+//        b.setAuthor(author1);
+//        b.setGenre(genre);
+//        books1.add(b);
+//        author1.setBooks(books1);
+       // Реализуйте методы save в AuthorDao
+        System.out.println("Введите автора для сохранения ");
+        Scanner scanner = new Scanner(System.in);
+        String name = scanner.next();
         Author author1 = new Author();
-        author1.setName("bob");
-
-        Genre genre = new Genre();
-        genre.setId(1);
-        genre.setName("Роман");
-
-        Book b = new Book();
-        b.setAmount(10);
-        b.setPrice(333);
-        b.setTitle("война и мир");
-        b.setAuthor(author1);
-        b.setGenre(genre);
-        books1.add(b);
-        author1.setBooks(books1);
+        author1.setName(name);
 
         dao.save(author1);
+      //  Реализуйте методы delete в AuthorDao
+        System.out.println(" введите Id  нужного автора  : ");
+        int id = scanner.nextInt();
 
-
+        dao.delete(id);
 
     }
 }

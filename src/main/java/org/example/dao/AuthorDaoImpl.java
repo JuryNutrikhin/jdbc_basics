@@ -13,6 +13,7 @@ public class AuthorDaoImpl implements AuthorDao {
     private String password;
 
     private GenreDao genreDao;
+    Author author ;
 
     public AuthorDaoImpl(String url, String user, String password) {
         this.url = url;
@@ -68,21 +69,6 @@ public class AuthorDaoImpl implements AuthorDao {
          Statement statement = cnn.createStatement();
          ResultSet resultSet = statement.executeQuery(query);
 
-      //  --------------------------------------
-//        try (Connection cnn = DriverManager.getConnection(url, user, password)) {
-//            String query =
-//                    "SELECT * FROM author a\n" +
-//                            "INNER JOIN book b on a.author_id = b.author_id\n" +
-//                            "WHERE a.author_id = ?";
-//            PreparedStatement statement = cnn.prepareStatement(query);
-//                statement.setInt(1, 1);
-////            statement.execute();
-//            statement.execute();
-//            ResultSet resultSet = statement.getResultSet();
-//            resultSet.next();
-//------------------------------------------------
-          //  Author author = new Author();
-
             while (resultSet.next()) {
                  Author author = new Author();
                 author.setId(resultSet.getInt("author_id"));
@@ -102,12 +88,31 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     @Override
-    public void save(Author author) { // сохранить автора в базе
-
+    public void save(Author author) throws SQLException {
+        this.author = author;
+        String query = "INSERT INTO author (name_author)\n" +
+                "Values (?);\n";
+        String author_name  = author.getName();
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(query)  ){
+            preparedStatement.setString(1,author_name);
+            preparedStatement.executeUpdate();
+            System.out.println("Автор записан в таблицу");
+        }
     }
 
     @Override
-    public void delete(int id) {//удалить по id
+    public void delete(int id) throws SQLException {//удалить по id
+        String delete =
+                " delete from author " +
+                        " where author_id = ?;";
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(delete);) {
+            preparedStatement.setInt(1,id);
+            //preparedStatement.execute();
+            preparedStatement.executeUpdate();
+
+        }
 
     }
 }
